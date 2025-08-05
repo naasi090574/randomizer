@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Рандомайзер слов</title>
+<style>
+    body {
+        background: transparent;
+        color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    #result {
+        padding: 20px;
+        border: 2px solid white;
+        border-radius: 10px;
+        font-size: 24px;
+        text-align: center;
+        max-width: 80%;
+        word-wrap: break-word;
+    }
+</style>
+</head>
+<body>
+
+<div id="result">—</div>
+
+<script>
+function getQueryParams() {
+    let params = {};
+    location.search.substr(1).split("&").forEach(function(part) {
+        if (!part) return;
+        let item = part.split("=");
+        params[decodeURIComponent(item[0])] = decodeURIComponent(item[1] || "");
+    });
+    return params;
+}
+
+function init() {
+    let p = getQueryParams();
+    if (!p.words) {
+        document.getElementById("result").textContent = "Нет слов";
+        return;
+    }
+
+    let words = p.words.split("|");
+    let randomWord = words[Math.floor(Math.random() * words.length)];
+
+    let box = document.getElementById("result");
+    box.textContent = randomWord;
+
+    // Стили
+    box.style.backgroundColor = `rgba(255,255,255,${p.bgOpacity || 0})`;
+    box.style.borderColor = p.borderColor || "#fff";
+    box.style.borderWidth = (p.borderWidth || 2) + "px";
+    box.style.borderRadius = (p.borderRadius || 10) + "px";
+    box.style.fontSize = (p.fontSize || 24) + "px";
+    box.style.color = p.textColor || "#fff";
+    box.style.fontFamily = p.fontFamily || "Arial";
+}
+init();
+</script>
+
+</body>
+</html>
